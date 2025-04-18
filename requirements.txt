@@ -1,0 +1,6 @@
+vaderSentiment
+ytmusicapi
+geocoder
+requests
+SpeechRecognition
+pyaudio

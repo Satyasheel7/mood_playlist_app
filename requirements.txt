@@ -4,3 +4,5 @@ geocoder
 requests
 SpeechRecognition
 pyaudio
+fuzzywuzzy
+python-Levenshtein

@@ -2,6 +2,7 @@ import streamlit as st
 import time
 import os
 from main import detect_mood_genre_keywords, determine_final_mood, extract_time_range, fetch_playlists, recommend_music
+from main import train_knn_model
 
 # Set page config
 st.set_page_config(
@@ -70,6 +71,12 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+@st.cache_resource  # This will cache the model
+def load_knn_model():
+    knn_model, _, _ = train_knn_model()
+    return knn_model
+
+knn_model = load_knn_model()
 
 # Layout
 col1, col2, col3 = st.columns([1, 2, 1])
@@ -106,7 +113,7 @@ if st.button("Analyze My Mood", key="submit"):
         with st.spinner("Analyzing your mood and finding the perfect tunes..."):
             try:
                 # First get mood analysis results
-                mood, mood_results, confidence_scores = determine_final_mood(user_feelings)
+                mood, mood_results, confidence_scores = determine_final_mood(user_feelings, knn_model)
                 
                 # Then extract genre and other preferences
                 _, genre, _ = detect_mood_genre_keywords(user_feelings)
